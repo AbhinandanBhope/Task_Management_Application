@@ -9,7 +9,7 @@ export class Projects {
     @PrimaryGeneratedColumn()
     id: number;
 
-    @Column()
+    @Column({unique:true})
     project_name: string;
     @Column()
     Project_Manager: number;

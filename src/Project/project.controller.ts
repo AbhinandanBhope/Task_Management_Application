@@ -1,4 +1,4 @@
-import { Body, Controller, Post ,Request,UseGuards ,Get} from '@nestjs/common';
+import { Body, Controller, Post ,Request,UseGuards ,Get ,Put,Param} from '@nestjs/common';
 import { ProjectService } from './project.service';
 import { CreateProjectDto } from 'src/validation/projectValidation.dto';
 import {ValidationPipe} from '../validation/validation.pipe';
@@ -14,6 +14,7 @@ export class ProjectController {
     createProject(@Request() req  ,@Body((new ValidationPipe()) ) CreateProjectDto: CreateProjectDto){
 
         
+        
         console.log(CreateProjectDto);
         console.log( req["user"] , 'DECODED DATA:::::::::')
       return this.projectService.createProject(req["user"],CreateProjectDto);
@@ -27,6 +28,14 @@ export class ProjectController {
     {
     return this.projectService.getAllProject(req["user"]);
     }
+    @UseGuards(AuthGuard)
+    @Put('/:id')
+    updateProject( @Request() req ,@Body(new ValidationPipe()) body: CreateProjectDto,
+    @Param() Id: any,){
+      this.projectService.updateProject(req["user"],body ,Id);
+
+    }
+
 
   }
 

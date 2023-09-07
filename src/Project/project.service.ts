@@ -20,6 +20,10 @@ export class ProjectService {
           const userN = await this.usersRepository.findOneBy({
             id: parseInt(user.id),
           });
+          const findProject = await this.projectRepository.findOneBy({ project_name:body.project_name});
+          if(findProject){
+            return { status: false, msg: 'Name already Taken Try Another', status_code: 404 };
+          }
           if(userN.Role !='Project_manager'){
             return { status: false, msg: 'You are not Project Manager', status_code: 404 };
             
@@ -56,7 +60,23 @@ export class ProjectService {
 
 
     }
-    async update(){
+    async updateProject(user,body ,Id){
+      const findProject = await this.projectRepository.findOneBy({ id:Id.id});
+      if(user.id == findProject.Project_Manager){
+        findProject.project_name = body.project_name;
+        findProject.Project_Description = body.Project_Description;
+        await this.projectRepository.save(findProject);
+        return findProject;
+
+      }
+      else{
+        return { status: false, msg: 'You are not Project Manager', status_code: 404 };
+
+      }
+      
+      
+
+
       
     }
 }
