@@ -65,7 +65,7 @@ export class UsersService {
     console.log(body3);
     console.log(Id);
     let user = await this.getUserById(Id.id);
-    if (user.isDeleted == null) {
+    if (user.isDeleted) {
       user.first_name = body3.first_name;
       user.last_name = body3.last_name;
       await this.usersRepository.save(user);

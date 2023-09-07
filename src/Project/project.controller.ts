@@ -1,4 +1,4 @@
-import { Body, Controller, Post ,Request,UseGuards} from '@nestjs/common';
+import { Body, Controller, Post ,Request,UseGuards ,Get} from '@nestjs/common';
 import { ProjectService } from './project.service';
 import { CreateProjectDto } from 'src/validation/projectValidation.dto';
 import {ValidationPipe} from '../validation/validation.pipe';
@@ -20,5 +20,13 @@ export class ProjectController {
 
 
     }
+    
+  @UseGuards(AuthGuard)
+    @Get()
+    getProjectById(@Request() req )
+    {
+    return this.projectService.getAllProject(req["user"]);
+    }
+
   }
 

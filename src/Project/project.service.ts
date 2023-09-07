@@ -39,11 +39,24 @@ export class ProjectService {
 
           
     }
+    async getAllProject(user){
+      const projects= await this.projectRepository.findBy({
+        Project_Manager: user.id,
+      });
+      console.log(projects)
+      return projects;
+
+
+    }
+
     async deleteProject(){
       // also delete all tasks  further
 
 
 
 
+    }
+    async update(){
+      
     }
 }
