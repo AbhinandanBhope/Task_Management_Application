@@ -7,6 +7,7 @@ import {
   Request,
   Put,
   UseGuards,
+  Delete
 } from '@nestjs/common';
 
 import { UsersService } from './user.service';
@@ -46,4 +47,11 @@ export class UserController {
   ) {
     return this.usersService.updateUser(body3, Id);
   }
+  @UseGuards(AuthGuard)
+  @Delete('/:id')
+  deleteUser(@Param() Id: any){
+    return this.usersService.deleteUser(Id);
+
+  }
+
 }

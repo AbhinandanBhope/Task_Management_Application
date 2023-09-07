@@ -4,9 +4,11 @@ import { Projects } from 'src/entites/projects.entity';
 import { JwtService } from '@nestjs/jwt';
 import { ProjectService } from './project.service';
 import { ProjectController } from './project.controller';
+import { User } from 'src/entites/user.entity';
+import { UsersService } from 'src/Users/user.service';
 @Module({
-  imports: [TypeOrmModule.forFeature([Projects])],
+  imports: [TypeOrmModule.forFeature([Projects ,  User])],
   controllers: [ProjectController],
-  providers: [ProjectService ,JwtService ],
+  providers: [ProjectService ,JwtService],
 })
 export class ProjectModule {}
