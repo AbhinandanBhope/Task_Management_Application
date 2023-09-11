@@ -1,7 +1,7 @@
 import { User } from "src/entites/user.entity";
-import { Projects } from "src/entites/projects.entity";
+import { Project } from "src/entites/project.entity";
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { Tasks } from "src/entites/tasks.entity";
+import { Task } from "src/entites/task.entity";
 import * as dotenv from 'dotenv';
 dotenv.config();
    
@@ -15,7 +15,7 @@ export const databaseConnections = [
         username: 'postgres',
         password:process.env.PASSWORD ,
         database: 'contact_book',
-        entities: [User ,Projects ,  Tasks],
+        entities: [User ,Project ,  Task],
         synchronize: true, 
     })
 ];

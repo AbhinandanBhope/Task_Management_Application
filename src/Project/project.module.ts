@@ -1,13 +1,13 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { Projects } from 'src/entites/projects.entity';
+import { Project } from 'src/entites/project.entity';
 import { JwtService } from '@nestjs/jwt';
 import { ProjectService } from './project.service';
 import { ProjectController } from './project.controller';
 import { User } from 'src/entites/user.entity';
 import { UsersService } from 'src/Users/user.service';
 @Module({
-  imports: [TypeOrmModule.forFeature([Projects ,  User])],
+  imports: [TypeOrmModule.forFeature([Project ,  User])],
   controllers: [ProjectController],
   providers: [ProjectService ,JwtService],
 })

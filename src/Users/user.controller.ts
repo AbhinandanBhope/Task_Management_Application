@@ -29,7 +29,7 @@ export class UserController {
 
   @UseGuards(AuthGuard)
   @Get('/:id')
-  getUserById(@Request() req  ,   @Param() params: any) {
+  getUserById(@Request() req  ,   @Param() params: any){
   
     return this.usersService.getUserById(params.id);
   }

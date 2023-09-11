@@ -13,13 +13,17 @@ export class UsersService {
     @InjectRepository(User)
     private usersRepository: Repository<User>,
   ) {}
-  async createUser(body){
+  async createUser(body) {
     try {
       const user = await this.usersRepository.findOneBy({
         email: body.email,
       });
-      if(user){
-        return { status: false, msg: 'email is already register', status_code: 404 };
+      if (user) {
+        return {
+          status: false,
+          msg: 'email is already register',
+          status_code: 404,
+        };
       }
       body['isDeleted'] = null;
       body['password'] = Md5.hashStr(body['password']);
@@ -42,7 +46,7 @@ export class UsersService {
     const user = await this.usersRepository.findOneBy({
       email: body2.email,
     });
-    const pass =  Md5.hashStr(body2.password);
+    const pass = Md5.hashStr(body2.password);
     if (!user || user.isDeleted != null) {
       return { status: false, msg: 'user not found', status_code: 404 };
     }

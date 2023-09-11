@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { Projects } from 'src/entites/projects.entity';
+import { Project } from 'src/entites/project.entity';
 import { Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
 import { User } from 'src/entites/user.entity';
@@ -8,8 +8,8 @@ import { User } from 'src/entites/user.entity';
 Injectable();
 export class ProjectService {
     constructor(
-        @InjectRepository(Projects)
-        private projectRepository: Repository<Projects > ,
+        @InjectRepository(Project)
+        private projectRepository: Repository<Project> ,
         @InjectRepository(User)
         private usersRepository: Repository<User>
       ) {}
@@ -20,8 +20,13 @@ export class ProjectService {
           const userN = await this.usersRepository.findOneBy({
             id: parseInt(user.id),
           });
-          const findProject = await this.projectRepository.findOneBy({ project_name:body.project_name});
+          console.log(body.project_Name)
+          const findProject = await this.projectRepository.findOneBy({ project_Name:body.project_Name});
+        
           if(findProject){
+            
+
+
             return { status: false, msg: 'Name already Taken Try Another', status_code: 404 };
           }
           if(userN.Role !='Project_manager'){
@@ -32,11 +37,13 @@ export class ProjectService {
           console.log(userN);
             body['createdAt']= new Date();
             body['isDeleted'] = null;
-            body['Project_Manager'] = user.id;
+            body['project_Manager'] = user.id;
+            console.log(body);
 
            const addProject = await this.projectRepository.save(body);
             return addProject;
           } catch (err) {
+            console.log(err);
             return err;
           } 
         
@@ -44,8 +51,10 @@ export class ProjectService {
           
     }
     async getAllProject(user){
+    
       const projects= await this.projectRepository.findBy({
-        Project_Manager: user.id,
+        project_Manager: user.id,
+        isDeleted :null
       });
       console.log(projects)
       return projects;
@@ -53,8 +62,24 @@ export class ProjectService {
 
     }
 
-    async deleteProject(){
+    async deleteProject(Id,userId){
       // also delete all tasks  further
+      
+     const user = await this.usersRepository.findOneBy({
+        id: parseInt(userId.id),
+      });
+      const findProject = await this.projectRepository.findOneBy({ id:Id.id});
+      if (user.isDeleted == null && findProject.isDeleted == null) {
+        
+        
+        let d = new Date();
+        findProject.isDeleted = d;
+        await this.projectRepository.save(findProject);
+        return findProject;
+      } else {
+        return { status: false, msg: 'Project not found', status_code: 404 };
+      } 
+      
 
 
 
@@ -62,9 +87,9 @@ export class ProjectService {
     }
     async updateProject(user,body ,Id){
       const findProject = await this.projectRepository.findOneBy({ id:Id.id});
-      if(user.id == findProject.Project_Manager){
-        findProject.project_name = body.project_name;
-        findProject.Project_Description = body.Project_Description;
+      if(user.id == findProject.project_Manager){
+        findProject.project_Name = body.project_name;
+        findProject.project_Description = body.Project_Description;
         await this.projectRepository.save(findProject);
         return findProject;
 

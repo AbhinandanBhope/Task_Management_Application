@@ -1,4 +1,5 @@
-import { BaseEntity, Entity, PrimaryGeneratedColumn, Column } from 'typeorm';
+import { BaseEntity, Entity, PrimaryGeneratedColumn, Column, OneToOne, JoinColumn } from 'typeorm';
+import { Task } from './task.entity';
 @Entity(
     { database: "Users" }
 )
@@ -24,4 +25,8 @@ export class User {
 
     @Column({ nullable: true})
     isDeleted:Date
+    
+    @OneToOne(() => Task , (task)=>task.user)
+    task: Task;
+
 }

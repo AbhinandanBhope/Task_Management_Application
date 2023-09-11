@@ -1,20 +1,9 @@
-import { IsString,  IsEmpty } from 'class-validator';
-
+import { IsString, IsEmpty } from 'class-validator';
 
 export class CreateProjectDto {
   @IsString()
-  project_name: string;
-  
-  
-   
+  project_Name: string;
+
   @IsString()
-  Project_Description: string;
-  
-
-
-  
-
-
-  
-
+  project_Description: string;
 }
