@@ -5,7 +5,6 @@ import { Task } from "src/entites/task.entity";
 import * as dotenv from 'dotenv';
 dotenv.config();
    
-console.log(process.env.PASSWORD  , "passeord") 
 
 export const databaseConnections = [ 
     TypeOrmModule.forRoot({

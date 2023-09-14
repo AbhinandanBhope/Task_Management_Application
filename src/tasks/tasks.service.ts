@@ -15,7 +15,7 @@ export class TasksService {
     @InjectRepository(User)
     private usersRepository: Repository<User>,
   ) {}
-
+  
   async createTask(body, user, Id) {
     const userN = await this.usersRepository.findOneBy({
       id: parseInt(user.id),
@@ -120,8 +120,8 @@ export class TasksService {
         status_code: 404,
       };
     }
-    let d = new Date();
-    task.isDeleted = d;
+    let date = new Date();
+    task.isDeleted = date;
     const deletedTask = await this.TaskRepository.save(task);
     return deletedTask;
   }

@@ -56,7 +56,7 @@ export class UsersService {
     }
 
     const TOKEN = await sign(
-      { email: user.email, id: user.id },
+      { email: user.email, id: user.id,role:user.Role },
       process.env.TOKEN_KEY,
     );
     console.log(TOKEN);
@@ -65,11 +65,17 @@ export class UsersService {
       token: TOKEN,
     };
   }
-  async updateUser(body3, Id) {
+  async updateUser(userAuth,body3) {
     console.log(body3);
-    console.log(Id);
-    let user = await this.getUserById(Id.id);
-    if (user.isDeleted) {
+  
+  
+    let user = await this.getUserById(userAuth.id);
+    console.log(user)
+    if(!user){
+      return{status:false,msg:'User not found',status_code:404};
+    }
+    
+    if (!user.isDeleted) {
       user.first_name = body3.first_name;
       user.last_name = body3.last_name;
       await this.usersRepository.save(user);
@@ -80,11 +86,15 @@ export class UsersService {
     console.log(user);
   }
   async deleteUser(Id) {
-    console.log(Id);
+    console.log(Id.id);
     const user = await this.usersRepository.findOneBy({
-      id: parseInt(Id),
+      id: parseInt(Id.id),
     });
-    if (user.isDeleted == null) {
+    if(!user){
+      return{status:false,msg:'User not found',status_code:404};
+    }
+   
+    if (user.isDeleted === null ) {
       const user = await this.usersRepository.findOneBy({
         id: parseInt(Id.id),
       });

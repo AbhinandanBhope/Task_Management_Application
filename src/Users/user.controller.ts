@@ -40,16 +40,16 @@ export class UserController {
   }
 
   @UseGuards(AuthGuard)
-  @Put('update/:id')
-  updateUser(
+  @Put('update')
+  updateUser(@Request() req,
     @Body(new ValidationPipe()) body3: CreateUserDto,
-    @Param() Id: any,
-  ) {
-    return this.usersService.updateUser(body3, Id);
+    
+  ) { console.log(req.user)
+  return this.usersService.updateUser(req.user,body3);
   }
   @UseGuards(AuthGuard)
   @Delete('/:id')
-  deleteUser(@Param() Id: any){
+  deleteUser( @Request() req, @Param() Id: any){
     return this.usersService.deleteUser(Id);
 
   }
